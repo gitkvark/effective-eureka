@@ -1,0 +1,24 @@
+- name: Disable password-based connection to SSH and copy the authorized_keys file for the root user
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Set authorized key taken from file
+      ansible.posix.authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file', '~/.ssh/ansible.pub') }}"
+
+    - name: Disable password authentication in sshd
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+      notify:
+        - restart sshd service
+
+  handlers:
+    - name: restart sshd service
+      ansible.builtin.systemd:
+        name: sshd
+        state: restarted
