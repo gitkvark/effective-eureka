@@ -1,0 +1,37 @@
+- name: Docker installation on Rocky linux
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Make sure dnf-plugins.core installed
+      ansible.builtin.dnf:
+        name: dnf-plugins-core
+        state: present
+
+    - name: Set up docker repository
+      ansible.builtin.yum_repository:
+        name: docker-ce
+        description: Docker repo for Rocky Linux
+        baseurl: https://download.docker.com/linux/rhel/$releasever/$basearch/stable
+        state: present
+
+    - name: Install Docker
+      ansible.builtin.package:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: present
+
+    - name: Start Docker service
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Add user s2m-user to docker group
+      ansible.builtin.user:
+        name: s2m-user
+        groups: docker
+        append: true
