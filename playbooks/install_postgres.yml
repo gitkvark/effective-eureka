@@ -1,0 +1,20 @@
+- name: Installing latest version of postgres server
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Set up postgres17 repository
+      ansible.builtin.yum_repository:
+        name: postgres17
+        description: postgres17 repo for Rocky Linux
+        baseurl: https://download.postgresql.org/pub/repos/yum/17/redhat/rhel-9-x86_64/
+        gpgkey: https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL
+        state: present
+
+    - name: Install the latest version of postgres from the official postgres repo
+      ansible.builtin.dnf:
+        name: postgresql17-server
+        state: present
+
+# Note: SELinux seems to be enabled and working out of the box when using the default settings for Postgres17.
+# Note: Postgres is installed, but not running. It needs further configuration based on project requirements.
