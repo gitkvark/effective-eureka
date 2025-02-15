@@ -1,0 +1,13 @@
+- name: Grow filesystem
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Make sure cloud-utils-growpart is installed
+      ansible.builtin.dnf:
+        name: cloud-utils-growpart
+        state: present
+
+    - name: Run script to grow FS, if new space has been added
+      ansible.builtin.script:
+        cmd: ../scripts/growfs.sh

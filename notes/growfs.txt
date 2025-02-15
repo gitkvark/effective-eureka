@@ -1,0 +1,22 @@
+Filesystem data before running the growfs playbook:
+
+[root@localhost ~]# df -h
+Filesystem           Size  Used Avail Use% Mounted on
+devtmpfs             4.0M     0  4.0M   0% /dev
+tmpfs                1.8G     0  1.8G   0% /dev/shm
+tmpfs                732M  8.6M  724M   2% /run
+/dev/mapper/rl-root   17G  2.0G   15G  12% /
+/dev/vda1            960M  319M  642M  34% /boot
+tmpfs                366M     0  366M   0% /run/user/1000
+
+
+Filesystem data after running the growfs playbook:
+
+[root@localhost ~]# df -h
+Filesystem           Size  Used Avail Use% Mounted on
+devtmpfs             4.0M     0  4.0M   0% /dev
+tmpfs                1.8G     0  1.8G   0% /dev/shm
+tmpfs                732M  8.6M  724M   2% /run
+/dev/mapper/rl-root   27G  2.1G   25G   8% /
+/dev/vda1            960M  319M  642M  34% /boot
+tmpfs                366M     0  366M   0% /run/user/1000
