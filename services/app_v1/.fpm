@@ -1,0 +1,9 @@
+-s dir
+-t rpm
+-p app_v1-0.0.1.x86_64.rpm
+--name app_v1
+--version 0.0.1
+--architecture x86_64
+--description "RestAPI app version 0.0.1"
+
+app_v1=/usr/bin/app_v1

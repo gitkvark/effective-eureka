@@ -1,0 +1,16 @@
+- name: Installing custom apps
+  hosts: all
+  become: true
+  tasks:
+    - name: Copy app rpm package
+      ansible.builtin.copy:
+        src: ../services/app_v1/app_v1-0.0.1.x86_64.rpm
+        dest: /tmp/app_v1-0.0.1.x86_64.rpm
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Install app rpm from a local file
+      ansible.builtin.dnf:
+        name: /tmp/app_v1-0.0.1.x86_64.rpm
+        disable_gpg_check: true
+        state: present
