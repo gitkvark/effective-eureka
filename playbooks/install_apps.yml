@@ -14,3 +14,9 @@
         name: /tmp/app_v1-0.0.1.x86_64.rpm
         disable_gpg_check: true
         state: present
+    - name: Launch apps via systemd
+      ansible.builtin.service:
+        name: app_v1
+        state: started
+        daemon_reload: true
+        enabled: true

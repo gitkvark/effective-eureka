@@ -2,8 +2,8 @@
 -t rpm
 -p app_v1-0.0.1.x86_64.rpm
 --name app_v1
---version 0.0.1
+--version 0.0.5
 --architecture x86_64
---description "RestAPI app version 0.0.1"
+--description "RestAPI app v1"
 
-app_v1=/usr/bin/app_v1
+app_v1=/usr/bin/app_v1 app_v1.service=/lib/systemd/system/app_v1.service

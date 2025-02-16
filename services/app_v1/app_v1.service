@@ -1,0 +1,10 @@
+[Unit]
+Description=RestAPI app v1
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/app_v1
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
