@@ -2,21 +2,39 @@
   hosts: all
   become: true
   tasks:
-    - name: Copy app rpm package
+    - name: Copy app v1 rpm package
       ansible.builtin.copy:
-        src: ../services/app_v1/app_v1-0.0.1.x86_64.rpm
-        dest: /tmp/app_v1-0.0.1.x86_64.rpm
+        src: ../services/app_v1/app_v1.x86_64.rpm
+        dest: /tmp/app_v1.x86_64.rpm
         owner: root
         group: root
         mode: '0644'
-    - name: Install app rpm from a local file
+    - name: Copy app v2 rpm package
+      ansible.builtin.copy:
+        src: ../services/app_v2/app_v2.x86_64.rpm
+        dest: /tmp/app_v2.x86_64.rpm
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Install app v1 rpm from a local file
       ansible.builtin.dnf:
-        name: /tmp/app_v1-0.0.1.x86_64.rpm
+        name: /tmp/app_v1.x86_64.rpm
         disable_gpg_check: true
         state: present
-    - name: Launch apps via systemd
+    - name: Install app v2 rpm from a local file
+      ansible.builtin.dnf:
+        name: /tmp/app_v2.x86_64.rpm
+        disable_gpg_check: true
+        state: present
+    - name: Launch app v1 via systemd
       ansible.builtin.service:
         name: app_v1
+        state: started
+        daemon_reload: true
+        enabled: true
+    - name: Launch app v2 via systemd
+      ansible.builtin.service:
+        name: app_v2
         state: started
         daemon_reload: true
         enabled: true
