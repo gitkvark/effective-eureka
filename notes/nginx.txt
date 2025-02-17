@@ -4,6 +4,8 @@ openssl genrsa -out myserver.key 2048
 
 openssl req -new -x509 -key myserver.key -out myserver.crt -days 3650
 
+Naturally, in a production environment, these keys would not be checked into github.
+
 Once the ansible playbook is played, nginx returns the required outputs:
 
 [s2m-user@localhost nginx]$ wget -O - --no-check-certificate https://ttt.skfs2m.com/v1 2>/dev/null
