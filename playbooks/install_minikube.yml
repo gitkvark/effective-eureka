@@ -1,0 +1,28 @@
+- name: Install minikube
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Install the minikube rpm from a remote repo # https://minikube.sigs.k8s.io/docs/start
+      ansible.builtin.dnf:
+        name: 'https://storage.googleapis.com/minikube/releases/latest/minikube-latest.x86_64.rpm'
+        disable_gpg_check: true
+        state: present
+
+    - name: Launch minikube
+      ansible.builtin.command:
+        cmd: "/usr/bin/minikube start"
+      become_user: s2m-user
+
+    - name: Set up kubectl repository
+      ansible.builtin.yum_repository:
+        name: docker-ce
+        description: Kubernetes
+        baseurl: https://pkgs.k8s.io/core:/stable:/v1.32/rpm/
+        gpgkey: https://pkgs.k8s.io/core:/stable:/v1.32/rpm/repodata/repomd.xml.key
+        state: present
+
+    - name: Install kubectl
+      ansible.builtin.dnf:
+        name: kubectl
+        state: present
