@@ -15,7 +15,7 @@ func main() {
 	router.GET("/healthz", healthzHandler)
 	router.GET("/api/version", apiVersionHandler)
 
-	router.Run("localhost:7002")
+	router.Run(":7002")
 }
 
 func healthzHandler(c *gin.Context) {
