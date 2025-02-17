@@ -1,4 +1,4 @@
-- name: Installing latest version of postgres server
+- name: Installing the ReactJS app
   hosts: all
   become: true
   tasks:
@@ -21,9 +21,9 @@
         group: root
         mode: '0644'
 
-    - name: "Copy the ReactJs system service file"
+    - name: "Copy the ReactJS system service file"
       ansible.builtin.copy:
-        src: ../services/react-js/react-js-app/react-js.service # The build directory, created by running "npm run build"
+        src: ../services/react-js/react-js-app/react-js.service
         dest: /lib/systemd/system/react-js.service
         owner: root
         group: root
