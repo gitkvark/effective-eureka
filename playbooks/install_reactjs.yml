@@ -1,0 +1,37 @@
+- name: Installing latest version of postgres server
+  hosts: all
+  become: true
+  tasks:
+    - name: Install npm
+      ansible.builtin.dnf:
+        name: npm
+        state: present
+
+    - name: Install "serve" node.js package globally.
+      community.general.npm:
+        name: serve
+        state: present
+        global: true
+
+    - name: "Copy the reactJS app to the VM"
+      ansible.builtin.copy:
+        src: ../services/react-js/react-js-app/build # The build directory, created by running "npm run build"
+        dest: /var/www/react-js-app
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: "Copy the ReactJs system service file"
+      ansible.builtin.copy:
+        src: ../services/react-js/react-js-app/react-js.service # The build directory, created by running "npm run build"
+        dest: /lib/systemd/system/react-js.service
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Launch the ReactJS app via systemd
+      ansible.builtin.service:
+        name: react-js
+        state: started
+        daemon_reload: true
+        enabled: true

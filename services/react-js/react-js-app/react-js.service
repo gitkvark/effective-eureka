@@ -1,0 +1,10 @@
+[Unit]
+Description=React.JS app
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/serve -s /var/www/react-js-app -l 7003
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
