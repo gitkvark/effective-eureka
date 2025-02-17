@@ -1,0 +1,68 @@
+- name: Install nginx and configure reverse proxy
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Install nginx
+      ansible.builtin.dnf:
+        name: nginx
+        state: present
+
+    - name: Create enabled sites directories for nginx
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled
+        state: directory
+        mode: '0755'
+
+    - name: Create certs directories for nginx
+      ansible.builtin.file:
+        path: /etc/nginx/certs
+        state: directory
+        mode: '0755'
+
+    - name: Copy the nginx cert to the VM
+      ansible.builtin.copy:
+        src: ../nginx/myserver.crt
+        dest: /etc/nginx/certs/myserver.crt
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Copy the nginx cert key to the VM
+      ansible.builtin.copy:
+        src: ../nginx/myserver.key
+        dest: /etc/nginx/certs/myserver.key
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Copy the nginx config file to the VM
+      ansible.builtin.copy:
+        src: ../nginx/nginx.conf
+        dest: /etc/nginx/nginx.conf
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Copy the ttt.skfs2m.com config file to the VM
+      ansible.builtin.copy:
+        src: ../nginx/ttt.skfs2m.com.conf
+        dest: /etc/nginx/sites-enabled/ttt.skfs2m.com.conf
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Enable SE policy that allows nginx to make local network connections
+      ansible.builtin.command:
+        cmd: "/usr/sbin/setsebool httpd_can_network_connect on -P"
+
+    - name: Reload Nginx service
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+
+    - name: Add domain name to /etc/hosts
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: '^127.0.0.1'
+        line: '127.0.0.1 localhost ttt.skfs2m.com'

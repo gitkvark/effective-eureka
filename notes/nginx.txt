@@ -1,0 +1,18 @@
+To generate a self-signed certificate, one needs to use these commands:
+
+openssl genrsa -out myserver.key 2048
+
+openssl req -new -x509 -key myserver.key -out myserver.crt -days 3650
+
+Once the ansible playbook is played, nginx returns the required outputs:
+
+[s2m-user@localhost nginx]$ wget -O - --no-check-certificate https://ttt.skfs2m.com/v1 2>/dev/null
+{
+    "app_name": "app_001",
+    "version": "v0.0.1"
+}
+[s2m-user@localhost nginx]$ wget -O - --no-check-certificate https://ttt.skfs2m.com/v2 2>/dev/null
+{
+    "app_name": "app_002",
+    "version": "v1.0.0"
+}
