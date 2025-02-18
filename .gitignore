@@ -404,3 +404,6 @@ FodyWeavers.xsd
 
 # Python venv
 .venv/
+
+# Docker image builds
+docker_images/

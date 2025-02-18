@@ -1,0 +1,32 @@
+The webserver needs a different configuration to work in minikube.
+The nginx/Dockerfile.k8s file contains the necessary configurations.
+
+In order to deploy the k8s cluster, we need to run the install_minikube
+playbook.
+
+Then we need to generate the docker images:
+
+cd services/app_v1
+docker build . -t app_v1
+
+cd services/app_v2
+docker build . -t app_v2
+
+cd services/react-js
+docker build . -t react-js
+
+cd nginx
+docker build . -t webserver -f Dockerfile.k8s
+
+Then we need to export the docker archives from the local docker server.
+These will be imported into minikube's image cache.
+
+cd docker_images
+docker save webserver -o webserver.tar
+docker save app_v1 -o app_v1.tar
+docker save app_v2 -o app_v2.tar
+docker save react-js -o react-js.tar
+
+Once these are in place, we can run the install_apps_kube playbook.
+
+It works, but it (obviously) needs a lot of work to be production ready.

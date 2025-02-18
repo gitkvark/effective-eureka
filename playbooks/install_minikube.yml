@@ -14,9 +14,14 @@
         cmd: "/usr/bin/minikube start"
       become_user: s2m-user
 
+    - name: Enable ingress addon
+      ansible.builtin.command:
+        cmd: "/usr/bin/minikube addons enable ingress"
+      become_user: s2m-user
+
     - name: Set up kubectl repository
       ansible.builtin.yum_repository:
-        name: docker-ce
+        name: kubernetes
         description: Kubernetes
         baseurl: https://pkgs.k8s.io/core:/stable:/v1.32/rpm/
         gpgkey: https://pkgs.k8s.io/core:/stable:/v1.32/rpm/repodata/repomd.xml.key

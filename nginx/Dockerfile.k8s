@@ -1,0 +1,5 @@
+FROM cgr.dev/chainguard/nginx:latest
+COPY ./myserver.crt /etc/nginx/certs/myserver.crt
+COPY ./myserver.key /etc/nginx/certs/myserver.key
+COPY ./ttt.skfs2m.com.k8s.conf /etc/nginx/conf.d/ttt.skfs2m.com.conf
+

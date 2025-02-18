@@ -15,3 +15,6 @@ collections:
   - name: cloud.common
     version: ">=4.0.0"
     source: https://galaxy.ansible.com
+  - name: community.docker
+    version: ">=4.0.0"
+    source: https://galaxy.ansible.com

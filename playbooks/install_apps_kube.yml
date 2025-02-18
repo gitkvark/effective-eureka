@@ -1,0 +1,59 @@
+- name: Installing applications into minikube
+  hosts: all
+  tasks:
+
+    - name: Copy docker archives to the VM
+      ansible.builtin.copy:
+        src: "../docker_images/{{ item }}"
+        dest: "/tmp/{{ item }}"
+        owner: s2m-user
+        group: s2m-user
+        mode: '0644'
+      with_items:
+        - app_v1.tar
+        - app_v2.tar
+        - react-js.tar
+        - webserver.tar
+
+    - name: Load Docker tar archive into Minikube VM
+      ansible.builtin.command:
+        cmd: "/usr/bin/minikube image load /tmp/{{ item }}"
+      with_items:
+        - app_v1.tar
+        - app_v2.tar
+        - react-js.tar
+        - webserver.tar
+
+    - name: Copy k8s manifests to the VM
+      ansible.builtin.copy:
+        src: "../manifests/{{ item }}"
+        dest: "/tmp/{{ item }}"
+        owner: s2m-user
+        group: s2m-user
+        mode: '0644'
+      with_items:
+        - app_v1.yml
+        - app_v2.yml
+        - react-js.yml
+        - webserver.yml
+
+    - name: Ensure pip is installed
+      ansible.builtin.dnf:
+        name: python3-pip
+        state: present
+      become: true
+
+    - name: Install kubernetes Python library using pip
+      ansible.builtin.pip:
+        name: kubernetes
+        state: present
+
+    - name: Load Docker image from tar archive in the initContainer
+      kubernetes.core.k8s:
+        state: present
+        src: "/tmp/{{ item }}"
+      with_items:
+        - app_v1.yml
+        - app_v2.yml
+        - react-js.yml
+        - webserver.yml

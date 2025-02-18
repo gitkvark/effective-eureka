@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: react-js
+  namespace: default
+  labels:
+    app: react-js
+spec:
+  containers:
+    - name: react-js
+      image: docker.io/library/react-js:latest
+      ports:
+        - containerPort: 7003
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "150m"
+        limits:
+          memory: "256Mi"
+          cpu: "500m"
+      imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-js-service
+  namespace: default
+spec:
+  type: ClusterIP
+  selector:
+    app: react-js
+  ports:
+    - port: 80
+      targetPort: 7003
+      protocol: TCP
