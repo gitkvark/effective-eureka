@@ -30,3 +30,14 @@ docker save react-js -o react-js.tar
 Once these are in place, we can run the install_apps_kube playbook.
 
 It works, but it (obviously) needs a lot of work to be production ready.
+
+[s2m-user@localhost ~]$ wget -O - --no-check-certificate https://ttt.skfs2m.com/v1 2>/dev/null
+{
+    "app_name": "app_001",
+    "version": "v0.0.1"
+}
+
+[s2m-user@localhost ~]$ kubectl logs webserver | tail -n 3
+10.244.0.26 - - [18/Feb/2025:11:24:36 +0000] "GET / HTTP/1.1" 200 1168 "-" "Wget/1.21.1" "192.168.49.1"
+10.244.0.26 - - [18/Feb/2025:11:24:39 +0000] "GET /v1 HTTP/1.1" 200 54 "-" "Wget/1.21.1" "192.168.49.1"
+10.244.0.26 - - [18/Feb/2025:11:24:51 +0000] "GET /v1 HTTP/1.1" 200 54 "-" "Wget/1.21.1" "192.168.49.1"
