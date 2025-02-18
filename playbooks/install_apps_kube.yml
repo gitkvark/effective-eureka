@@ -48,7 +48,7 @@
         name: kubernetes
         state: present
 
-    - name: Load Docker image from tar archive in the initContainer
+    - name: Deploy pods and services to minikube
       kubernetes.core.k8s:
         state: present
         src: "/tmp/{{ item }}"
